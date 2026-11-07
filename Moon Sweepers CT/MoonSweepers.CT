@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="52">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>1</ID>
+      <Description>"SERYOGASK | MoonSweepers"</Description>
+      <Options moHideChildren="1"/>
+      <Color>00D7FF</Color>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>2</ID>
+          <Description>"INFORMATION"</Description>
+          <Options moHideChildren="1"/>
+          <Color>00D7FF</Color>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>3</ID>
+              <Description>"Game Title: Moon Sweepers"</Description>
+              <Color>00D7FF</Color>
+              <GroupHeader>1</GroupHeader>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>4</ID>
+              <Description>"Game Version: 1.0.1"</Description>
+              <Color>00D7FF</Color>
+              <GroupHeader>1</GroupHeader>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>5</ID>
+              <Description>"Table Version: 1.0.0"</Description>
+              <Color>00D7FF</Color>
+              <GroupHeader>1</GroupHeader>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>6</ID>
+              <Description>"Author: SeryogaSK"</Description>
+              <Color>00D7FF</Color>
+              <GroupHeader>1</GroupHeader>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>1337163400</ID>
+          <Description>"ATTACH TO PROCESS AND ENABLE MONO"</Description>
+          <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+          <Color>0000FF</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+  if(getCEVersion() &lt; 7.4) then
+    ShowMessage('Warning! CE version should be 7.4 or above')
+  end
+
+OpenProcess("MoonSweepers.exe")
+  if(process == nil) then
+    ShowMessage('The process is NOT found!')
+  end
+
+LaunchMonoDataCollector()
+{$asm}
+
+
+[DISABLE]
+
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>463</ID>
+              <Description>"PLAYER"</Description>
+              <Color>00FF00</Color>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>{
+  ==============================================
+         Header Changer by SeryogaSK
+  ----------------------------------------------
+	Process				: MoonSweepers.exe
+	Game Title 			: Moon Sweepers
+	Game Version		: 1.0 // maybe wrong since can' find right Game Version
+	Author				: SeryogaSK
+  ----------------------------------------------
+   Warning: Online use may trigger anti-cheat!
+  ==============================================
+}
+[ENABLE]
+
+aobscanfunction(ply_devspeedmul,MoonCleaners.MoonWalker:FixedUpdate,F3 0F 10 86 5C 01 00 00 F3 0F 5A C0 F2 0F 5A E8)  // should be unique in this function
+alloc(newmem,$1000,ply_devspeedmul)
+alloc(ply_base,8)
+
+
+label(code)
+label(return)
+
+newmem:
+mov [ply_base],rsi
+
+code:
+  movss xmm0,[rsi+0000015C]
+  cvtss2sd xmm0,xmm0
+  cvtsd2ss xmm5,xmm0
+  jmp return
+
+ply_devspeedmul:
+  jmp far newmem
+  nop 2
+return:
+registersymbol(ply_devspeedmul ply_base)
+
+[DISABLE]
+
+ply_devspeedmul:
+  db F3 0F 10 86 5C 01 00 00 F3 0F 5A C0 F2 0F 5A E8
+
+unregistersymbol(*)
+dealloc(*)
+
+{
+// ORIGINAL CODE - INJECTION POINT: MoonCleaners.MoonWalker:FixedUpdate+1d33
+
+MoonCleaners.MoonWalker:FixedUpdate+1cf8: F3 0F 5A C9              - cvtss2sd xmm1,xmm1
+MoonCleaners.MoonWalker:FixedUpdate+1cfc: F2 0F 59 C1              - mulsd xmm0,xmm1
+MoonCleaners.MoonWalker:FixedUpdate+1d00: F2 0F 5A E8              - cvtsd2ss xmm5,xmm0
+MoonCleaners.MoonWalker:FixedUpdate+1d04: F3 0F 11 AD 60 F6 FF FF  - movss [rbp-000009A0],xmm5
+MoonCleaners.MoonWalker:FixedUpdate+1d0c: 48 63 85 58 F6 FF FF     - movsxd  rax,dword ptr [rbp-000009A8]
+MoonCleaners.MoonWalker:FixedUpdate+1d13: 89 85 78 FD FF FF        - mov [rbp-00000288],eax
+MoonCleaners.MoonWalker:FixedUpdate+1d19: 48 63 85 5C F6 FF FF     - movsxd  rax,dword ptr [rbp-000009A4]
+MoonCleaners.MoonWalker:FixedUpdate+1d20: 89 85 7C FD FF FF        - mov [rbp-00000284],eax
+MoonCleaners.MoonWalker:FixedUpdate+1d26: 48 63 85 60 F6 FF FF     - movsxd  rax,dword ptr [rbp-000009A0]
+MoonCleaners.MoonWalker:FixedUpdate+1d2d: 89 85 80 FD FF FF        - mov [rbp-00000280],eax
+// ---------- INJECTING HERE ----------
+MoonCleaners.MoonWalker:FixedUpdate+1d33: F3 0F 10 86 5C 01 00 00  - movss xmm0,[rsi+0000015C]
+// ---------- DONE INJECTING  ----------
+MoonCleaners.MoonWalker:FixedUpdate+1d3b: F3 0F 5A C0              - cvtss2sd xmm0,xmm0
+MoonCleaners.MoonWalker:FixedUpdate+1d3f: F2 0F 5A E8              - cvtsd2ss xmm5,xmm0
+MoonCleaners.MoonWalker:FixedUpdate+1d43: F3 0F 11 AD E0 F2 FF FF  - movss [rbp-00000D20],xmm5
+MoonCleaners.MoonWalker:FixedUpdate+1d4b: F3 0F 10 85 E0 F2 FF FF  - movss xmm0,[rbp-00000D20]
+MoonCleaners.MoonWalker:FixedUpdate+1d53: F3 0F 5A C0              - cvtss2sd xmm0,xmm0
+MoonCleaners.MoonWalker:FixedUpdate+1d57: 48 63 85 78 FD FF FF     - movsxd  rax,dword ptr [rbp-00000288]
+MoonCleaners.MoonWalker:FixedUpdate+1d5e: 89 85 88 F6 FF FF        - mov [rbp-00000978],eax
+MoonCleaners.MoonWalker:FixedUpdate+1d64: 48 63 85 7C FD FF FF     - movsxd  rax,dword ptr [rbp-00000284]
+MoonCleaners.MoonWalker:FixedUpdate+1d6b: 89 85 8C F6 FF FF        - mov [rbp-00000974],eax
+MoonCleaners.MoonWalker:FixedUpdate+1d71: 48 63 85 80 FD FF FF     - movsxd  rax,dword ptr [rbp-00000280]
+}
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>472</ID>
+                  <Description>"dustKilogramsPerLitre"</Description>
+                  <VariableType>Float</VariableType>
+                  <Address>[ply_base]+20</Address>
+                  <Offsets>
+                    <Offset>154</Offset>
+                    <Offset>A0</Offset>
+                  </Offsets>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>473</ID>
+                  <Description>"dollarsPerKilogram"</Description>
+                  <VariableType>Float</VariableType>
+                  <Address>[ply_base]+20</Address>
+                  <Offsets>
+                    <Offset>144</Offset>
+                    <Offset>A0</Offset>
+                  </Offsets>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>474</ID>
+                  <Description>"runSpeed"</Description>
+                  <VariableType>Float</VariableType>
+                  <Address>[ply_base]+20</Address>
+                  <Offsets>
+                    <Offset>114</Offset>
+                    <Offset>A0</Offset>
+                  </Offsets>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>476</ID>
+              <Description>"TOOL"</Description>
+              <Color>0080FF</Color>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>{
+  ==============================================
+         Header Changer by SeryogaSK
+  ----------------------------------------------
+	Process				: MoonSweepers.exe
+	Game Title 			: Moon Sweepers
+	Game Version		: 1.0 // maybe wrong since can' find right Game Version
+	Author				: SeryogaSK
+  ----------------------------------------------
+   Warning: Online use may trigger anti-cheat!
+  ==============================================
+}
+[ENABLE]
+
+aobscanfunction(ply_brushtool,MoonCleaners.MoonBrush:get_ReticleFootprint,F3 0F 10 96 18 01 00 00 F3 0F 5A D2 F3 0F 10 0D ** ** ** **)  // should be unique in this function
+alloc(newmem,$1000,ply_brushtool)
+alloc(brush_base,8)
+
+label(code)
+label(return)
+
+newmem:
+mov [brush_base],rsi
+
+code:
+  movss xmm2,[rsi+00000118]
+  cvtss2sd xmm2,xmm2
+  //Original code:movss xmm1,[MoonCleaners.MoonBrush:get_ReticleFootprint+240]
+  push rax
+  mov rax,MoonCleaners.MoonBrush:get_ReticleFootprint+240
+  movss xmm1,[rax]
+  pop rax
+  jmp return
+
+ply_brushtool:
+  jmp far newmem
+  nop 6
+return:
+registersymbol(ply_brushtool brush_base)
+
+[DISABLE]
+
+ply_brushtool:
+  db F3 0F 10 96 18 01 00 00 F3 0F 5A D2 F3 0F 10 0D 21 02 00 00
+
+unregistersymbol(*)
+dealloc(*)
+
+{
+// ORIGINAL CODE - INJECTION POINT: MoonCleaners.MoonBrush:get_ReticleFootprint+b
+
+1B6EA6C8B31: C1 39 0A                 - sar [rcx],0A
+1B6EA6C8B34: B5 01                    - mov ch,01
+1B6EA6C8B36: 00 00                    - add [rax],al
+1B6EA6C8B38: 00 00                    - add [rax],al
+1B6EA6C8B3A: 00 00                    - add [rax],al
+1B6EA6C8B3C: 00 00                    - add [rax],al
+1B6EA6C8B3E: 00 00                    - add [rax],al
+MoonCleaners.MoonBrush:get_ReticleFootprint: 48 83 EC 48              - sub rsp,48
+MoonCleaners.MoonBrush:get_ReticleFootprint+4: 48 89 34 24              - mov [rsp],rsi
+MoonCleaners.MoonBrush:get_ReticleFootprint+8: 48 8B F1                 - mov rsi,rcx
+// ---------- INJECTING HERE ----------
+MoonCleaners.MoonBrush:get_ReticleFootprint+b: F3 0F 10 96 18 01 00 00  - movss xmm2,[rsi+00000118]
+// ---------- DONE INJECTING  ----------
+MoonCleaners.MoonBrush:get_ReticleFootprint+13: F3 0F 5A D2              - cvtss2sd xmm2,xmm2
+MoonCleaners.MoonBrush:get_ReticleFootprint+17: F3 0F 10 0D 21 02 00 00  - movss xmm1,[MoonCleaners.MoonBrush:get_ReticleFootprint+240]
+MoonCleaners.MoonBrush:get_ReticleFootprint+1f: F3 0F 5A C9              - cvtss2sd xmm1,xmm1
+MoonCleaners.MoonBrush:get_ReticleFootprint+23: F3 0F 10 05 05 02 00 00  - movss xmm0,[MoonCleaners.MoonBrush:get_ReticleFootprint+230]
+MoonCleaners.MoonBrush:get_ReticleFootprint+2b: F3 0F 5A C0              - cvtss2sd xmm0,xmm0
+MoonCleaners.MoonBrush:get_ReticleFootprint+2f: F2 0F 5A EA              - cvtsd2ss xmm5,xmm2
+MoonCleaners.MoonBrush:get_ReticleFootprint+33: F3 0F 11 6C 24 18        - movss [rsp+18],xmm5
+MoonCleaners.MoonBrush:get_ReticleFootprint+39: F2 0F 5A E9              - cvtsd2ss xmm5,xmm1
+MoonCleaners.MoonBrush:get_ReticleFootprint+3d: F3 0F 11 6C 24 1C        - movss [rsp+1C],xmm5
+MoonCleaners.MoonBrush:get_ReticleFootprint+43: F2 0F 5A E8              - cvtsd2ss xmm5,xmm0
+}
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>478</ID>
+                  <Description>"cleaningWidth"</Description>
+                  <VariableType>Float</VariableType>
+                  <Address>[brush_base]+118</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>479</ID>
+                  <Description>"cleaningDepth"</Description>
+                  <VariableType>Float</VariableType>
+                  <Address>[brush_base]+11C</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>480</ID>
+                  <Description>"cleaningEdgeWidth"</Description>
+                  <VariableType>Float</VariableType>
+                  <Address>[brush_base]+120</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>481</ID>
+                  <Description>"removalRate"</Description>
+                  <VariableType>Float</VariableType>
+                  <Address>[brush_base]+128</Address>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>40</ID>
+          <Description>"DEBUG / DEVELOPER"</Description>
+          <Options moHideChildren="1"/>
+          <Color>C070E8</Color>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>464</ID>
+              <Description>"Player Base"</Description>
+              <ShowAsHex>1</ShowAsHex>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>8 Bytes</VariableType>
+              <Address>ply_base</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>477</ID>
+              <Description>"Tool Base"</Description>
+              <ShowAsHex>1</ShowAsHex>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>8 Bytes</VariableType>
+              <Address>brush_base</Address>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>60</ID>
+          <Description>"CHANGELOG &amp; CREDITS"</Description>
+          <Options moHideChildren="1"/>
+          <Color>A0A0A0</Color>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>61</ID>
+              <Description>"v1.0.0 - Initial table"</Description>
+              <Color>A0A0A0</Color>
+              <GroupHeader>1</GroupHeader>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>62</ID>
+              <Description>"Credits: SeryogaSK"</Description>
+              <Color>A0A0A0</Color>
+              <GroupHeader>1</GroupHeader>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>63</ID>
+              <Description>"License: GPL-3.0"</Description>
+              <Color>A0A0A0</Color>
+              <GroupHeader>1</GroupHeader>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+  <Comments>SeryogaSK reusable Cheat Engine table template. Structure and metadata placeholders only; no game addresses or active cheats.
+</Comments>
+  <LuaScript>-- Cheat Table Decorator
+function decorateSSKTable()
+  local mainForm = getMainForm()
+
+  -- Main Form Styling
+  mainForm.Caption = 'Moon Sweepers (Steam) - Enhanced Table [by SeryogaSK]'
+  getAutoAttachList().add("MoonSweepers.exe")
+end
+
+-- Execute when table loads
+decorateSSKTable()
+
+</LuaScript>
+</CheatTable>
